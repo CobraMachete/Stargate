@@ -115,29 +115,18 @@ function createPropAndPackage() {
     //ESTABLISHING VARS FOR CREATED ENTITIES
     var propertyName = comboNameArray[0];
     var packageName = comboNameArray[1];
-    var thePropertyEnt;
-    var thePackageEnt;
-    var theProductionEnt;
-    var theShotEnt;
+    
     
     //PROMISE CHAIN FUNCTIONS
-    function shotItemPromise() {
+    function propertyItemPromise() {
         
         return new Promise(function(resolve,reject) {
 
-            createProperty(entity, propertyName, prjid)
-                .then(resShotEnt => {
+            createProperty(entity, propertyName, packageName)
+                .then(resPropEnt => {
 
-                    console.log(resShotEnt);
-                
-                    if (resShotEnt.data != undefined) {
-                        theShotEnt = resShotEnt.data;
-                    } else {
-                        theShotEnt = resShotEnt;
-                    }
-
-                    console.log(theShotEnt);
-                    resolve(theShotEnt)
+                    console.log(resPropEnt);
+                    resolve(resPropEnt)
                     
 
                 }).catch((err) => {
@@ -151,11 +140,10 @@ function createPropAndPackage() {
     
     
     //GET AND DO EVERYTHING
-    shotItemPromise().then(function(res) {
+    propertyItemPromise().then(function(res) {
 
         console.log(res);
-        return Promise.all([compFoldPromise(), threedFoldPromise()])
-
+        
     })
 
 }
@@ -574,12 +562,12 @@ function createShotAndTasks() {
 }
 
 // CREATE NEW PROPERTY
-function createProperty(entity, propertyName, prjid) {
+function createProperty(entity, propertyName, packageName) {
 
     return new Promise(function (resolve, reject) {
 
         console.log(entity)
-        session.query('select name from Project where id is ' + entity.id +'')
+        session.query('select name from Property where name is ' + propertyName +' and parent_id is "' + entity.id + '"')
             .then(function (response) {
                 
                 console.log(response);
@@ -588,93 +576,39 @@ function createProperty(entity, propertyName, prjid) {
 
                     if (response.data.length == 0) {
 
-                        const newProduction = session.create('Production', {
+                        const newProperty = session.create('Property', {
                             name: propertyName,
                             parent_id: entity.id,
-                            project_id: prjid,
+                            project_id: entity.id,
                         });
 
-                        
-                        resp(response.data[0]);                    
-                        
-                    } else {
-                        console.log('PRODUCTION ALREADY EXISTS...');
-                        rej("None")
-                    }
-                }).then(function (ret) {
-
-                    if (ret !== "None") {
-
-                        resolve(ret);
-
-                    } else {
-
-                        // Fetch the entity (project, shot, or folder) you want to add the folder to
-                        session.query('select id, name from TypedContext where id is "' + entity.id + '"')
-                        .then(function (entityResponse) {
-                            
-                            if (entityResponse.data.length === 0) {
-                                console.error('ENTITY NOT FOUND.');
-                                reject('ENTITY NOT FOUND.');
-                            }
-
-                            const entity = entityResponse.data[0];
-
-                            // CREATE NEW SHOT
-                            const newShot = session.create('Shot', {
-                                name: shotName,
-                                parent_id: entity.id,
-                                project_id: prjid,
-                            }).then(function (res) {
-                                
-                                console.log(res)
-                                resolve(res);
-                                
-                            });
-                            
+                        const newShowPackage = session.create('Show_package', {
+                            name: packageName,
+                            parent_id: newProperty.id,
+                            project_id: entity.id,
+                        });
+    
+                        const newProduction = session.create('Production', {
+                            name: '03_brdcast_gfx',
+                            parent_id: newShowPackage.id,
+                            project_id: entity.id,
                         })
-                        .catch(function (error) {
-                            console.error('ERROR FETCHING ENTITY:', error);
-                            reject('ERROR FETCHING ENTITY:', error);
-                        });
+
+                        resolve(newProperty);  
+                        
+               
+                        
+                    } else {
+                        console.log('Property ALREADY EXISTS...');
+                        reject("None")
                     }
                 })
-                .catch( () => {
-                    // Fetch the entity (project, shot, or folder) you want to add the folder to
-                    session.query('select id, name from TypedContext where id is "' + entity.id + '"')
-                    .then(function (entityResponse) {
-                        
-                        if (entityResponse.data.length === 0) {
-                            console.error('ENTITY NOT FOUND.');
-                            reject('ENTITY NOT FOUND.');
-                        }
-
-                        const entity = entityResponse.data[0];
-
-                        // CREATE NEW SHOT
-                        const newShot = session.create('Shot', {
-                            name: shotName,
-                            parent_id: entity.id,
-                            project_id: prjid,
-                        }).then(function (res) {
-                            
-                            console.log(res)
-                            resolve(res);
-                            
-                        });
-                        
-                    })
-                    .catch(function (error) {
-                        console.error('ERROR FETCHING ENTITY:', error);
-                        reject('ERROR FETCHING ENTITY:', error);
-                    });
-                });
-
                 
+
             })
             .catch(function (error) {
-                console.error('ERROR QUERYING SHOT:', error);
-                reject('ERROR QUERYING SHOT:', error);
+                console.error('ERROR QUERYING PROJECT:', error);
+                reject('ERROR QUERYING PROJECT:', error);
             });
 
     });
