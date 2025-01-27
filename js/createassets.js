@@ -584,23 +584,17 @@ function createProperty(entity, propertyName, packageName) {
 
                         console.log(newProperty);
 
-                        const newShowPackage = session.create('Show_package', {
-                            name: packageName,
-                            parent_id: newProperty.id,
-                            project_id: entity.id,
-                        });
-
-                        console.log(newShowPackage);
+                        
     
-                        const newProduction = session.create('Production', {
-                            name: '03_brdcast_gfx',
-                            parent_id: newShowPackage.id,
-                            project_id: entity.id,
-                        })
+                        // const newProduction = session.create('Production', {
+                        //     name: '03_brdcast_gfx',
+                        //     parent_id: newShowPackage.id,
+                        //     project_id: entity.id,
+                        // })
 
-                        console.log(newProduction);
+                        // console.log(newProduction);
 
-                        resolve(newProperty);  
+                         
                         
                
                         
@@ -608,6 +602,18 @@ function createProperty(entity, propertyName, packageName) {
                         console.log('Property ALREADY EXISTS...');
                         reject("None")
                     }
+                }).then(function(propertyres) {
+
+                    const newShowPackage = session.create('Show_package', {
+                        name: packageName,
+                        parent_id: propertyres.id,
+                        project_id: entity.id,
+                    });
+
+                    resp(newShowPackage); 
+
+                    console.log(newShowPackage);
+
                 })
                 
 
