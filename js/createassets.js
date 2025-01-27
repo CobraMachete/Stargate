@@ -583,6 +583,8 @@ function createProperty(entity, propertyName, packageName) {
                         });
 
                         console.log(newProperty);
+                        console.log(propertyName);
+                        console.log(packageName);
                         resp(newProperty)
                         
     
