@@ -605,6 +605,8 @@ function createProperty(entity, propertyName, packageName) {
 
                 }).then(function(propertyres) {
 
+                    console.log(propertyres);
+
                     if (propertyres.data.length > 0) {
 
                         const newShowPackage = session.create('Show_package', {
@@ -614,7 +616,6 @@ function createProperty(entity, propertyName, packageName) {
                         });
 
                         resp(newShowPackage); 
-
                         console.log(newShowPackage);
                     }
                     
