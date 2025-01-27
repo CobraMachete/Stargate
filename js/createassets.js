@@ -605,15 +605,19 @@ function createProperty(entity, propertyName, packageName) {
 
                 }).then(function(propertyres) {
 
-                    const newShowPackage = session.create('Show_package', {
-                        name: packageName,
-                        parent_id: propertyres.id,
-                        project_id: entity.id,
-                    });
+                    if (propertyres.data.length > 0) {
 
-                    resp(newShowPackage); 
+                        const newShowPackage = session.create('Show_package', {
+                            name: packageName,
+                            parent_id: propertyres.data.id,
+                            project_id: entity.id,
+                        });
 
-                    console.log(newShowPackage);
+                        resp(newShowPackage); 
+
+                        console.log(newShowPackage);
+                    }
+                    
 
                 })
                 
