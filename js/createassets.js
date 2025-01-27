@@ -582,17 +582,23 @@ function createProperty(entity, propertyName, packageName) {
                             project_id: entity.id,
                         });
 
+                        console.log(newProperty);
+
                         const newShowPackage = session.create('Show_package', {
                             name: packageName,
                             parent_id: newProperty.id,
                             project_id: entity.id,
                         });
+
+                        console.log(newShowPackage);
     
                         const newProduction = session.create('Production', {
                             name: '03_brdcast_gfx',
                             parent_id: newShowPackage.id,
                             project_id: entity.id,
                         })
+
+                        console.log(newProduction);
 
                         resolve(newProperty);  
                         
