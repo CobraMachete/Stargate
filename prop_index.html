@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Property Creator</title>
+        <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
+        <link rel="preconnect" href="https://rsms.me/">
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+        <link rel="stylesheet" type="text/css" href="css/inter.css">
+        <link rel="stylesheet" type="text/css" href="css/etc.min.css">
+        <link rel="stylesheet" type="text/css" href="css/ext.min.css">
+        <link rel="stylesheet" type="text/css" href="css/ftrack-theme-dark-vars.min.css">
+        <link rel="stylesheet" type="text/css" href="css/ftrack-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="css/material-icons.css">
+        <link rel="stylesheet" type="text/css" href="css/normalize.min.css">
+        <link rel="stylesheet" type="text/css" href="css/theme-dark.css">
+
+        <script type="text/javascript" src="js/jquery-3.7.1.slim.min.js"></script>
+
+        <script type="text/javascript" src="js/ui.js"></script>
+        <script type="text/javascript" src="js/data_handler.js"></script>
+        <script type="text/javascript" src="js/mousetrap.min.js"></script>
+        
+    </head>
+    <body>
+        <script>
+            $(document).ready(function() {
+
+                console.log('document ready')
+                $('#shotstable').hide();
+
+                var treecont = document.getElementById("treepreview");
+                $(treecont).hide();
+                
+                var thetable = document.getElementById("shotstable");
+                var datatableheader = document.getElementById("shottableheader");
+                var datatable = document.getElementById("shottablebody");
+                var shotsearchbox = document.getElementById("searchbar");
+
+                //SEARCHBOX FILTERING
+                shotsearchbox.addEventListener('input', function() {
+                    
+                    var myinput = shotsearchbox.value.toLowerCase();
+                    $('#shottablebody').empty();
+                    if (myinput.length > 0) {
+                        var suggestions = shots_data.filter(function(item) {
+                            return item.toLowerCase().includes(myinput);
+                        });
+                        if (suggestions.length > 0) {
+                            
+                            for (var i = 0; i < suggestions.length; i++) {
+
+                                var info = "<tr onclick='addToShotField(this)'><td>" + suggestions[i] + "<td><tr>";
+                                $(datatable).append(info);
+                                
+                            }
+
+                            $('#shotstable').show();
+                            
+                        } else {
+                            $('#shotstable').hide();
+                        }
+                    } else {
+                        $('#shotstable').hide();
+                    }
+
+                });
+
+
+                
+
+                
+
+                
+
+                //SHOWING DD CONTENT ON HOVER
+                ddtwo.addEventListener("mouseenter", function(event) {
+                    $("#ddcontentstagetwo").show();
+                    
+                });
+
+                //SHOWING DD CONTENT ON HOVER
+                ddone.addEventListener("mouseenter", function(event) {
+                    $("#ddcontentstageone").show();
+                });
+
+                
+
+                
+
+                Mousetrap.bind(['command+k', 'ctrl+k'], function(e) {
+
+                    if (document.activeElement.id == "comptaskcontainer") {
+                        addSingleCompTask();
+                    }
+
+                    if (document.activeElement.id == "threedtaskcontainer") {
+                        addSingle3DTask()
+                    }
+                    
+                    return false;
+                });
+              
+
+                //EVENT LISTENER FOR STANDALONE TEXT FIELD
+                standalonefield.addEventListener('change', function(e) {
+                    theinputval = standalonefield.value;
+                    theinputval = sanitizestring(theinputval);
+                    standalonefield.value = theinputval.toUpperCase();
+                });
+
+                window.addEventListener('resize', function(event) {
+                    var mainmarg = getElMargin();
+                    
+                    
+                }, true);
+
+                
+                getElMargin();
+                
+                window.onresize = computeSize;
+
+                window.addEventListener("change", computeSize);
+
+
+            });
+
+            
+
+            //GLOBAL VARS
+            var lastRowClicked;
+            var firstTab = false;
+            var totCompTasks = 0;
+            var totThreeDTasks = 0;
+
+            var compcolumnvis = true;
+            var threedcolumnvis = false;
+
+            var noDataEntries = false;
+            var prevTaskData = "Tricode";
+
+            var ghostcomptasks = [];
+            var ghost3Dtasks = [];
+            var clickedInside = false;
+
+            var searchActive = false;
+
+            var theprjid = "";
+            var theproduction = "";
+            var propName = "";
+            var thumbResFold = "";
+
+            //ADMIN PROJECT WITH THUMBNAIL RESOURCES
+            var ADMIN_PRJ_ID = "249a98cd-b296-46cd-b6e2-0c9c61608b6c";
+            var RESOURCE_FOLDER_ID = "14ede329-6b72-43e1-b458-6ff31196c089";
+            
+
+            var compItemsFinished = false;
+            var thrdItemsFinished = false;
+
+            
+
+
+        </script>
+        <div id="widget">
+            <div class="master-container" id="mastercontainer">
+                <!------------------------ SHOTS CREATOR ------------------------>
+                <div class="main-container" id="maincontainer">
+
+                    <div class="title-row">
+                        <div class="app-title-thin"><p>Property<span class="app-title-big"> Creator</span></p></div>
+                        <!-- <div class="app-title-big"><p>Creator</p></div> -->
+                    </div>
+
+                    <div class="search-container" id="searchcontainer">
+                        <div class="shot-search-bar" id="propertysearch">
+                            <input id="searchbar" type="text" name="search" placeholder="Property...">
+                        </div>
+
+                        <div class="package-search-bar" id="packagesearch" style="margin-top: 10px">
+                            <input id="packagesearchbar" type="text" name="search" placeholder="Package...(ex: 00_regular_season)">
+                        </div>
+
+                        <div class="bottomrowcontainer">
+                            <div class="createbtncont">
+                                <button class="createbtn" type="button" onclick="preflightChecks()">Create Property</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+
+                
+            </div>
+            
+            
+        </div>
+
+        <script type="text/javascript" src="js/ftrack.min.js"></script>
+        <script type="text/javascript" src="js/ftrack_widget.js"></script>
+        <script type="text/javascript" src="js/shots_index.js"></script>
+        <script type="text/javascript" src="js/createassets.js"></script>
+        
+        
+    </body>
+</html>
