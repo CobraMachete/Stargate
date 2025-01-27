@@ -608,8 +608,8 @@ function createProperty(entity, propertyName, packageName) {
                 }).then(function(propertyres) {
 
                     console.log(propertyres);
-                    console.log(propertyres.data.length)
-                    console.log(propertyres.data.id)'
+                    console.log(propertyres.data.length);
+                    console.log(propertyres.data.id);
                     
                     if (propertyres.data.length > 0) {
 
