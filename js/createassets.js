@@ -207,7 +207,7 @@ function createPackageSolo() {
 
                 if (response.data.length > 0) {
 
-                    var currprjid = response.data[0].id;
+                    var currprjid = response.data[0].project_id;
 
                     var packageName = thepkg;
                 
