@@ -583,7 +583,7 @@ function createProperty(entity, propertyName, packageName) {
                         });
 
                         console.log(newProperty);
-
+                        resp(newProperty)
                         
     
                         // const newProduction = session.create('Production', {
@@ -602,6 +602,7 @@ function createProperty(entity, propertyName, packageName) {
                         console.log('Property ALREADY EXISTS...');
                         reject("None")
                     }
+
                 }).then(function(propertyres) {
 
                     const newShowPackage = session.create('Show_package', {
