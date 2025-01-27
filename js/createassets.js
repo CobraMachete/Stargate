@@ -707,10 +707,7 @@ function createProperty(entity, propertyName, packageName) {
                             project_id: entity.id,
                         });
 
-                        var statnew_id = entity['changes']['statusid']['new'];
-                        var statold_id = entity['changes']['statusid']['old'];
-                        console.log(statnew_id);
-                        console.log(statold_id);
+                        
                         
                         console.log(newShowPackage);
                         rsp(newShowPackage); 
@@ -767,10 +764,7 @@ function createPackage(entity, packageName, prjid) {
                             project_id: prjid,
                         });
 
-                        var statnew_id = entity['changes']['statusid']['new'];
-                        var statold_id = entity['changes']['statusid']['old'];
-                        console.log(statnew_id);
-                        console.log(statold_id);
+                        
                         resp(newPackage)
                         
     
