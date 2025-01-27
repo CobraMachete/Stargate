@@ -706,7 +706,7 @@ function createProperty(entity, propertyName, packageName) {
                             parent_id: propertyres.data.id,
                             project_id: entity.id,
                         });
-                        entity.save();
+                        session.update();
                         console.log(newShowPackage);
                         rsp(newShowPackage); 
 
@@ -762,7 +762,7 @@ function createPackage(entity, packageName, prjid) {
                             project_id: prjid,
                         });
 
-                        entity.save();
+                        session.update();
                         resp(newPackage)
                         
     
