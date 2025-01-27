@@ -607,18 +607,35 @@ function createProperty(entity, propertyName, packageName) {
 
                 }).then(function(propertyres) {
 
-                    console.log(propertyres);
-                    console.log(propertyres.data.length);
-                    console.log(propertyres.data.id);
-                    
-                    const newShowPackage = session.create('Show_package', {
-                        name: packageName,
-                        parent_id: propertyres.data.id,
-                        project_id: entity.id,
-                    });
+                    return new Promise(function (rsp, rjct) {
+                        
+                        
+                        const newShowPackage = session.create('Show_package', {
+                            name: packageName,
+                            parent_id: propertyres.data.id,
+                            project_id: entity.id,
+                        });
 
-                    console.log(newShowPackage);
-                    resolve(newShowPackage); 
+                        console.log(newShowPackage);
+                        rsp(newShowPackage); 
+
+                    }).then(function(packageres) {
+
+                        console.log(packageres);
+                        console.log(packageres.data.id);
+
+                        const newProduction = session.create('Production', {
+                            name: '03_brdcast_gfx',
+                            parent_id: packageres.data.id,
+                            project_id: entity.id,
+                        })
+
+                        console.log(newProduction);
+                        resolve(newProduction)
+
+                    })
+
+                    
                         
                     
                 
