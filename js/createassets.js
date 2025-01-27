@@ -610,7 +610,7 @@ function createProperty(entity, propertyName, packageName) {
                     console.log(propertyres);
                     console.log(propertyres.data.length)
                     console.log(propertyres.data.id)'
-                    '
+                    
                     if (propertyres.data.length > 0) {
 
                         const newShowPackage = session.create('Show_package', {
