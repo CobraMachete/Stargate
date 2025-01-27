@@ -199,39 +199,53 @@ function createPackageSolo() {
         var entity = ftrackWidget.getEntity();
         console.log(entity);
 
-        //ESTABLISHING VARS FOR CREATED ENTITIES
-        
-        var packageName = thepkg;
-        
-        
-        //PROMISE CHAIN FUNCTIONS
-        function packageItemPromise() {
-            
-            return new Promise(function(resolve,reject) {
+        session.query('select project_id from Property where id is ' + entity.id +'')
+        .then(function (response) {
 
-                createPackage(entity, packageName)
-                    .then(resPropEnt => {
+                //ESTABLISHING VARS FOR CREATED ENTITIES
+                console.log(response);
 
-                        console.log(resPropEnt);
-                        resolve(resPropEnt)
+                if (response.data.length > 0) {
+
+                    var currprjid = response.data[0].id;
+
+                    var packageName = thepkg;
+                
+                
+                    //PROMISE CHAIN FUNCTIONS
+                    function packageItemPromise() {
                         
-
-                    }).catch((err) => {
-                        console.log(err);
-                        rejections.push[err];
-                        reject(err);
-                    });
-
-            })
-        }
+                        return new Promise(function(resolve,reject) {
         
+                            createPackage(entity, packageName, currprjid)
+                                .then(resPropEnt => {
         
-        //GET AND DO EVERYTHING
-        packageItemPromise().then(function(res) {
+                                    console.log(resPropEnt);
+                                    resolve(resPropEnt)
+                                    
+        
+                                }).catch((err) => {
+                                    console.log(err);
+                                    rejections.push[err];
+                                    reject(err);
+                                });
+        
+                        })
+                    }
+                    
+                    
+                    //GET AND DO EVERYTHING
+                    packageItemPromise().then(function(res) {
+        
+                        console.log(res);
+                        
+                    })
 
-            console.log(res);
-            
+                }
+                
         })
+
+        
     } else {
         return
     }
