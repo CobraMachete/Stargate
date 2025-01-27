@@ -611,19 +611,17 @@ function createProperty(entity, propertyName, packageName) {
                     console.log(propertyres.data.length);
                     console.log(propertyres.data.id);
                     
-                    if (propertyres.data.length > 0) {
+                    const newShowPackage = session.create('Show_package', {
+                        name: packageName,
+                        parent_id: propertyres.data.id,
+                        project_id: entity.id,
+                    });
 
-                        const newShowPackage = session.create('Show_package', {
-                            name: packageName,
-                            parent_id: propertyres.data.id,
-                            project_id: entity.id,
-                        });
-
-                        console.log(newShowPackage);
-                        resolve(newShowPackage); 
+                    console.log(newShowPackage);
+                    resolve(newShowPackage); 
                         
-                    }
                     
+                
 
                 })
                 
