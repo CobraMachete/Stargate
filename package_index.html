@@ -36,9 +36,7 @@
                 var datatable = document.getElementById("shottablebody");
                 var shotsearchbox = document.getElementById("searchbar");
 
-                var ddone = document.getElementById("startselection");
-                var ddtwo = document.getElementById("startselectiontwo");
-
+                //SEARCHBOX FILTERING
                 shotsearchbox.addEventListener('input', function() {
                     
                     var myinput = shotsearchbox.value.toLowerCase();
@@ -68,29 +66,11 @@
                 });
 
 
-                var thetasktable = document.getElementById("comptablebody");
-                var cmptskcont = document.getElementById("comptaskcontainer");
+                
 
-                var the3Dtasktable = document.getElementById("threedtablebody");
-                var thrddtskcont = document.getElementById("threedtaskcontainer");
+                
 
-                //PASTING EXCEL SHEET ITEMS INTO COMP TASK COLUMNS
-                cmptskcont.addEventListener('paste', function (e) {
-                    excelToTable(e, thetasktable)
-
-                    setTimeout(function() {
-                        checkForDuplicateTasks(thetasktable);
-                    }, 500);
-                });
-
-                //PASTING EXCEL SHEET ITEMS INTO 3D TASK COLUMNS
-                thrddtskcont.addEventListener('paste', function (e) {
-                    excelToDotsTable(e, the3Dtasktable);
-
-                    setTimeout(function() {
-                        checkForDuplicateTasks(the3Dtasktable);
-                    }, 500);
-                });
+                
 
                 //SHOWING DD CONTENT ON HOVER
                 ddtwo.addEventListener("mouseenter", function(event) {
@@ -103,16 +83,7 @@
                     $("#ddcontentstageone").show();
                 });
 
-                // EVENT LISTENER FOR TABLE OPERATIONS
-                document.addEventListener('keydown', (event) => {
-                    
-                    if (document.activeElement.tagName == "TBODY") {
-                        if (event.key == "Backspace"){
-                            keyboardDeleteRows(document.activeElement);
-                        }
-                    }
-
-                });
+                
 
                 
 
@@ -130,17 +101,6 @@
                 });
               
 
-                //EVENT LISTENER FOR TREEVIEW CREATION
-                document.addEventListener('mousedown', (event) => {
-                    if (document.activeElement.id == "searchbar") {
-                        searchActive = true;
-                        treeviewHandler();
-                    } else {
-                        searchActive = false;
-                        treeviewHandler();
-                    }
-                });
-
                 //EVENT LISTENER FOR STANDALONE TEXT FIELD
                 standalonefield.addEventListener('change', function(e) {
                     theinputval = standalonefield.value;
@@ -154,15 +114,9 @@
                     
                 }, true);
 
-                //CLASS SWITCHING FOR TOGGLES
-                $('.toggle').click(function(e){
-                    e.preventDefault();
-                    $(this).toggleClass('toggle-on');
-                });
-
-
+                
                 getElMargin();
-                initRive();
+                
                 window.onresize = computeSize;
 
                 window.addEventListener("change", computeSize);
