@@ -780,7 +780,7 @@ function createPackage(entity, packageName, prjid) {
                     })
 
                     console.log(newProduction);
-                    rsp(newProduction); 
+                    resolve(newProduction); 
 
                     
 
