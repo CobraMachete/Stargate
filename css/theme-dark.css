@@ -452,24 +452,21 @@ body {
 }
 
 .main-container {
-    max-width: 400px;
+    max-width: 500px;
     padding-right: 15px;
-    padding-left: 25px;
+    padding-left: 15px;
     margin-top: 30px;
-    margin-right: 20px;
-    margin-left: auto;
-    width: 350px;
+    
+    width: 50%;
    
 }
 
 .main-container-blur {
-    max-width: 600px;
+    max-width: 500px;
     padding-right: 15px;
-    padding-left: 25px;
+    padding-left: 15px;
     margin-top: 30px;
-    margin-right: 20px;
-    margin-left: auto;
-    width: 350px;
+    width: 50%;
     opacity: 30%;
     pointer-events: none;
     filter: blur(5px);
