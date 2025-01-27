@@ -745,11 +745,11 @@ function createPackage(entity, packageName, prjid) {
                         const newPackage = session.create('Show_package', {
                             name: packageName,
                             parent_id: entity.id,
-                            project_id: entity.parent_id,
+                            project_id: prjid,
                         });
 
                         
-                        resp(newProperty)
+                        resp(newPackage)
                         
     
                     } else {
@@ -757,35 +757,18 @@ function createPackage(entity, packageName, prjid) {
                         reject("None")
                     }
 
-                }).then(function(propertyres) {
+                }).then(function(packageres) {
 
-                    return new Promise(function (rsp, rjct) {
-                        
-                        
-                        const newShowPackage = session.create('Show_package', {
-                            name: packageName,
-                            parent_id: propertyres.data.id,
-                            project_id: entity.id,
-                        });
-
-                        console.log(newShowPackage);
-                        rsp(newShowPackage); 
-
-                    }).then(function(packageres) {
-
-                        console.log(packageres);
-                        console.log(packageres.data.id);
-
-                        const newProduction = session.create('Production', {
-                            name: '03_brdcast_gfx',
-                            parent_id: packageres.data.id,
-                            project_id: entity.id,
-                        })
-
-                        console.log(newProduction);
-                        resolve(newProduction)
-
+                    const newProduction = session.create('Production', {
+                        name: '03_brdcast_gfx',
+                        parent_id: packageres.data.id,
+                        project_id: prjid,
                     })
+
+                    console.log(newProduction);
+                    rsp(newProduction); 
+
+                    
 
                 })
                 
