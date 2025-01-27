@@ -615,8 +615,9 @@ function createProperty(entity, propertyName, packageName) {
                             project_id: entity.id,
                         });
 
-                        resp(newShowPackage); 
                         console.log(newShowPackage);
+                        resolve(newShowPackage); 
+                        
                     }
                     
 
