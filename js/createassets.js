@@ -58,6 +58,25 @@ function preFlightComboElement() {
 
 }
 
+function preFlightPackageElement() {
+
+    var pkgsearchbar = document.getElementById("packagesearchbar");
+    var pkgentry = pkgsearchbar.value;
+    var pkgname;
+
+
+    //CHECKING SHOW PACKAGE SEARCHBAR VALUE
+    if (pkgentry.length == 0 || pkgentry == "") {
+        return false
+    } else {
+        pkgname = pkgentry;
+    }
+
+    return pkgname
+
+
+}
+
 function preflightChecks() {
     //DEFOCUS BG ELEMENTS
     blurBGElements();
@@ -107,44 +126,116 @@ function createPropAndPackage() {
         creds.apiKey
     );
 
-    var comboNameArray = preFlightComboElement();
+    var namecheck = preFlightComboElement();
 
-    //GETTING BASE ENTITY
-    var entity = ftrackWidget.getEntity();
+    if (namecheck !== false) {
 
-    //ESTABLISHING VARS FOR CREATED ENTITIES
-    var propertyName = comboNameArray[0];
-    var packageName = comboNameArray[1];
-    
-    
-    //PROMISE CHAIN FUNCTIONS
-    function propertyItemPromise() {
+        var comboNameArray = namecheck;
+
+        //GETTING BASE ENTITY
+        var entity = ftrackWidget.getEntity();
+
+        //ESTABLISHING VARS FOR CREATED ENTITIES
+        var propertyName = comboNameArray[0];
+        var packageName = comboNameArray[1];
         
-        return new Promise(function(resolve,reject) {
+        
+        //PROMISE CHAIN FUNCTIONS
+        function propertyItemPromise() {
+            
+            return new Promise(function(resolve,reject) {
 
-            createProperty(entity, propertyName, packageName)
-                .then(resPropEnt => {
+                createProperty(entity, propertyName, packageName)
+                    .then(resPropEnt => {
 
-                    console.log(resPropEnt);
-                    resolve(resPropEnt)
-                    
+                        console.log(resPropEnt);
+                        resolve(resPropEnt)
+                        
 
-                }).catch((err) => {
-                    console.log(err);
-                    rejections.push[err];
-                    reject(err);
-                });
+                    }).catch((err) => {
+                        console.log(err);
+                        rejections.push[err];
+                        reject(err);
+                    });
 
+            })
+        }
+        
+        
+        //GET AND DO EVERYTHING
+        propertyItemPromise().then(function(res) {
+
+            console.log(res);
+            
         })
+
+    } else {
+        return
     }
     
-    
-    //GET AND DO EVERYTHING
-    propertyItemPromise().then(function(res) {
 
-        console.log(res);
+}
+
+function createPackageSolo() {
+
+    
+    //CREDENTIALS AND SESSION
+    var creds = window.credentials;
+    console.debug(creds);
+
+    session = new ftrack.Session(
+        creds.serverUrl,
+        creds.apiUser,
+        creds.apiKey
+    );
+
+    var namecheck = preFlightPackageElement();
+
+    if (namecheck !== false) {
+
+        var thepkg = namecheck;
+
+        //GETTING BASE ENTITY
+        var entity = ftrackWidget.getEntity();
+        console.log(entity);
+
+        //ESTABLISHING VARS FOR CREATED ENTITIES
         
-    })
+        var packageName = thepkg;
+        
+        
+        //PROMISE CHAIN FUNCTIONS
+        function packageItemPromise() {
+            
+            return new Promise(function(resolve,reject) {
+
+                createPackage(entity, packageName)
+                    .then(resPropEnt => {
+
+                        console.log(resPropEnt);
+                        resolve(resPropEnt)
+                        
+
+                    }).catch((err) => {
+                        console.log(err);
+                        rejections.push[err];
+                        reject(err);
+                    });
+
+            })
+        }
+        
+        
+        //GET AND DO EVERYTHING
+        packageItemPromise().then(function(res) {
+
+            console.log(res);
+            
+        })
+    } else {
+        return
+    }
+    
 
 }
 
@@ -582,24 +673,10 @@ function createProperty(entity, propertyName, packageName) {
                             project_id: entity.id,
                         });
 
-                        console.log(newProperty);
-                        console.log(propertyName);
-                        console.log(packageName);
+                        
                         resp(newProperty)
                         
     
-                        // const newProduction = session.create('Production', {
-                        //     name: '03_brdcast_gfx',
-                        //     parent_id: newShowPackage.id,
-                        //     project_id: entity.id,
-                        // })
-
-                        // console.log(newProduction);
-
-                         
-                        
-               
-                        
                     } else {
                         console.log('Property ALREADY EXISTS...');
                         reject("None")
@@ -635,10 +712,80 @@ function createProperty(entity, propertyName, packageName) {
 
                     })
 
-                    
-                        
-                    
+                })
                 
+
+            })
+            .catch(function (error) {
+                console.error('ERROR QUERYING PROJECT:', error);
+                reject('ERROR QUERYING PROJECT:', error);
+            });
+
+    });
+
+    
+
+}
+
+// CREATE NEW PROPERTY
+function createPackage(entity, packageName, prjid) {
+
+    return new Promise(function (resolve, reject) {
+
+        console.log(entity)
+        session.query('select name from Show_package where name is ' + packageName +' and parent_id is "' + entity.id + '"')
+            .then(function (response) {
+                
+                console.log(response);
+
+                return new Promise(function (resp, rej) {
+
+                    if (response.data.length == 0) {
+
+                        const newPackage = session.create('Show_package', {
+                            name: packageName,
+                            parent_id: entity.id,
+                            project_id: entity.parent_id,
+                        });
+
+                        
+                        resp(newProperty)
+                        
+    
+                    } else {
+                        console.log('Property ALREADY EXISTS...');
+                        reject("None")
+                    }
+
+                }).then(function(propertyres) {
+
+                    return new Promise(function (rsp, rjct) {
+                        
+                        
+                        const newShowPackage = session.create('Show_package', {
+                            name: packageName,
+                            parent_id: propertyres.data.id,
+                            project_id: entity.id,
+                        });
+
+                        console.log(newShowPackage);
+                        rsp(newShowPackage); 
+
+                    }).then(function(packageres) {
+
+                        console.log(packageres);
+                        console.log(packageres.data.id);
+
+                        const newProduction = session.create('Production', {
+                            name: '03_brdcast_gfx',
+                            parent_id: packageres.data.id,
+                            project_id: entity.id,
+                        })
+
+                        console.log(newProduction);
+                        resolve(newProduction)
+
+                    })
 
                 })
                 
