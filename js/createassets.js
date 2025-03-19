@@ -324,3 +324,7 @@ function createPackage(entity, packageName, prjid) {
 
 }
 
+function sanitizeshot(str) {
+    var snstr = str.replaceAll(" ","_");
+    return snstr
+}

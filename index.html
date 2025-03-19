@@ -25,37 +25,30 @@
         <script>
             $(document).ready(function() {
 
-                
-                // var shotsearchbox = document.getElementById("searchbar");
+                var propsearchbox = document.getElementById("searchbar");
+                var pkgsearchbox = document.getElementById("packagesearchbar");
 
-                // //SEARCHBOX FILTERING
-                // shotsearchbox.addEventListener('input', function() {
+                //EVENT LISTENER FOR PACKAGE SEARCH BOX
+                propsearchbox.addEventListener('input', function(e) {
                     
-                //     var myinput = shotsearchbox.value.toLowerCase();
-                //     $('#shottablebody').empty();
-                //     if (myinput.length > 0) {
-                //         var suggestions = shots_data.filter(function(item) {
-                //             return item.toLowerCase().includes(myinput);
-                //         });
-                //         if (suggestions.length > 0) {
-                            
-                //             for (var i = 0; i < suggestions.length; i++) {
+                    var targinput = event.target.value;
+                    var sanshot = sanitizeshot(targinput);
+                    
+                    // PUSHING THE SANITIZED TEXT BACK TO FIELD
+                    propsearchbox.value = sanshot;
 
-                //                 var info = "<tr onclick='addToShotField(this)'><td>" + suggestions[i] + "<td><tr>";
-                //                 $(datatable).append(info);
-                                
-                //             }
+                });
 
-                //             $('#shotstable').show();
-                            
-                //         } else {
-                //             $('#shotstable').hide();
-                //         }
-                //     } else {
-                //         $('#shotstable').hide();
-                //     }
+                //EVENT LISTENER FOR PACKAGE SEARCH BOX
+                pkgsearchbox.addEventListener('input', function(e) {
+                    
+                    var targinput = event.target.value;
+                    var sanshot = sanitizeshot(targinput);
+                    
+                    // PUSHING THE SANITIZED TEXT BACK TO FIELD
+                    pkgsearchbox.value = sanshot;
 
-                // });
+                });
 
 
 
